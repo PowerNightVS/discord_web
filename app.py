@@ -3,25 +3,31 @@ from dotenv import load_dotenv
 import os
 import requests
 
+# Load environment variables from .env
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET")
+
+# Discord OAuth2 setup
 CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI")
 BOT_INVITE_LINK = f"https://discord.com/oauth2/authorize?client_id={CLIENT_ID}&scope=bot+applications.commands&permissions=8"
 DISCORD_API = "https://discord.com/api"
 
+
 @app.route("/")
 def index():
     return render_template("index.html", invite_link=BOT_INVITE_LINK)
+
 
 @app.route("/login")
 def login():
     return redirect(
         f"{DISCORD_API}/oauth2/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&response_type=code&scope=identify%20guilds"
     )
+
 
 @app.route("/callback")
 def callback():
@@ -39,11 +45,13 @@ def callback():
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
+    # Exchange code for access token
     r = requests.post(f"{DISCORD_API}/oauth2/token", data=data, headers=headers)
     r.raise_for_status()
     tokens = r.json()
     access_token = tokens["access_token"]
 
+    # Fetch user info
     user_data = requests.get(
         f"{DISCORD_API}/users/@me", headers={"Authorization": f"Bearer {access_token}"}
     ).json()
@@ -51,16 +59,21 @@ def callback():
     session["user"] = user_data
     return redirect(url_for("dashboard"))
 
+
 @app.route("/dashboard")
 def dashboard():
     if "user" not in session:
         return redirect(url_for("login"))
     return render_template("dashboard.html", user=session["user"])
 
+
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("index"))
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("DEBUG", "False").lower() == "true"
+    app.run(host="0.0.0.0", port=port, debug=debug)
