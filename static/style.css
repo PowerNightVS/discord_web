@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #202225;
+  color: white;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #5865F2;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  margin: 10px;
+  display: inline-block;
+}
+
+.button.secondary {
+  background-color: #4e5d94;
+}
