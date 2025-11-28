@@ -7,46 +7,83 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <style>
-    /* Optional: Smooth font rendering */
     body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   </style>
   <script>
-    // Tailwind config for dark mode
-    tailwind.config = {
-      darkMode: 'class'
-    }
+    tailwind.config = { darkMode: 'class' };
   </script>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white dark:bg-gray-900 dark:text-white transition-colors duration-500 min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white dark:bg-gray-900 dark:text-white transition-colors duration-500 min-h-screen flex flex-col">
 
-  <!-- Dark Mode Toggle Button -->
-  <div class="absolute top-4 right-4">
-    <button id="theme-toggle" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white">
-      🌓 Toggle Dark Mode
-    </button>
-  </div>
+  <!-- ======================= NAVBAR ======================= -->
+  <nav class="w-full bg-gray-900/90 backdrop-blur-lg fixed top-0 left-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='bot_icon.png') }}" class="w-10 h-10 rounded-full border border-blue-500">
+        <span class="text-xl font-bold text-blue-400">PowerNight</span>
+      </div>
 
-  <!-- Page Content -->
-  <main class="flex-1 w-full flex flex-col items-center justify-center max-w-5xl">
+      <!-- Links -->
+      <div class="hidden md:flex items-center gap-4 font-semibold text-gray-300">
+        <a href="{{ url_for('dashboard') }}" class="hover:text-blue-400 transition">Home</a>
+        <a href="{{ invite_link }}" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition">➕ Invite Bot</a>
+        <a href="{{ support_link }}" class="hover:text-blue-400 transition">💬 Support</a>
+        <button id="theme-toggle" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">🌓</button>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <div class="md:hidden flex items-center gap-2">
+        <button id="theme-toggle-mobile" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">🌓</button>
+        <button id="mobile-menu-button" class="text-gray-300 hover:text-blue-400 focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-900/95 backdrop-blur-lg">
+      <a href="{{ url_for('dashboard') }}" class="block px-6 py-3 text-gray-300 hover:text-blue-400">Home</a>
+      <a href="{{ invite_link }}" class="block px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg mx-4 my-2 text-center">➕ Invite Bot</a>
+      <a href="{{ support_link }}" class="block px-6 py-3 text-gray-300 hover:text-blue-400">💬 Support</a>
+    </div>
+  </nav>
+
+  <!-- ======================= MAIN CONTENT ======================= -->
+  <main class="flex-1 w-full flex flex-col items-center justify-center max-w-6xl pt-32 px-4">
     {% block content %}{% endblock %}
   </main>
 
+  <!-- ======================= FOOTER ======================= -->
+  <footer class="w-full text-center py-6 text-gray-500 text-sm mt-10">
+    © 2025 PowerNight – Made with ❤️ for Discord
+  </footer>
+
+  <!-- ======================= SCRIPTS ======================= -->
   <script>
     const toggleButton = document.getElementById('theme-toggle');
+    const toggleButtonMobile = document.getElementById('theme-toggle-mobile');
     const html = document.documentElement;
 
     // Load theme from localStorage
-    if (localStorage.getItem('theme') === 'dark') {
-      html.classList.add('dark');
-    }
+    if(localStorage.getItem('theme') === 'dark') html.classList.add('dark');
 
-    toggleButton.addEventListener('click', () => {
+    const toggleTheme = () => {
       html.classList.toggle('dark');
-      if (html.classList.contains('dark')) {
-        localStorage.setItem('theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
-      }
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    };
+
+    toggleButton.addEventListener('click', toggleTheme);
+    toggleButtonMobile.addEventListener('click', toggleTheme);
+
+    // Mobile menu toggle
+    const mobileButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
     });
   </script>
 </body>
