@@ -7,26 +7,23 @@ body {
 /* Banner gradient overlay */
 .banner-bg {
   position: relative;
+  background: url('/static/banner.jpg') center/cover no-repeat;
 }
 
 .banner-bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.85)
-  );
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.85));
   pointer-events: none;
 }
 
-/* Glass effect for sections */
+/* Glass effect for cards */
 .glass-card {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 1rem;
 }
 
@@ -36,7 +33,7 @@ body {
   transform: translateY(-3px);
 }
 
-/* Bot image pulse */
+/* Bot pulse */
 .bot-pulse {
   animation: pulseShadow 3s infinite ease-in-out;
 }
@@ -47,7 +44,7 @@ body {
   100% { box-shadow: 0 0 15px rgba(0, 153, 255, 0.4); }
 }
 
-/* Footer subtle fade animation */
+/* Fade-in */
 .fadeIn {
   animation: fadeInAnim 2s ease-in-out;
 }
@@ -55,4 +52,14 @@ body {
 @keyframes fadeInAnim {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Slow rotation for server icons */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
 }

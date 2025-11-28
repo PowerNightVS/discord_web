@@ -96,6 +96,25 @@
   <a href="{{ support_link }}" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition">💬 Support Server</a>
 </section>
 
+<!-- ======================= JOINED SERVERS ======================= -->
+<section id="servers" class="max-w-6xl mx-auto mt-20 px-6">
+  <h2 class="text-3xl font-bold text-center mb-8 text-blue-400">🌐 Joined Servers</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for server in joined_servers %}
+    <div class="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl text-center shadow-lg transition hover:shadow-xl">
+      
+      <!-- Server Icon with Spin -->
+      <img src="{{ server.icon_url }}" alt="{{ server.name }}" class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500 mb-4 server-spin">
+
+      <h3 class="text-lg font-bold mb-2">{{ server.name }}</h3>
+      <p class="text-gray-300 mb-2">{{ server.members }} members</p>
+      <p class="text-gray-400 text-sm">{{ server.description or "No description" }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
 <!-- ======================= FOOTER ======================= -->
 <footer class="text-gray-500 text-sm text-center mt-20 mb-10">
   © 2025 NightWave – Made with ❤️ for Discord servers

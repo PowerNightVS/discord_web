@@ -24,9 +24,7 @@ def get_current_user():
     return session.get("user")
 
 def check_bot_status():
-    """Check if NightWave bot is online"""
-    # Placeholder, replace with real status logic if needed
-    return True
+    return True  # Placeholder: replace with real logic
 
 def get_bot_wake_up_time():
     return "08:00 AM"
@@ -38,20 +36,27 @@ def get_bot_guilds():
     response = requests.get(url, headers=headers)
     if response.status_code != 200:
         return []
+
     guilds = response.json()
-    # Add icon URLs
     for g in guilds:
         g['icon_url'] = (
             f"https://cdn.discordapp.com/icons/{g['id']}/{g['icon']}.png"
-            if g['icon'] else url_for('static', filename='default_icon.png')
+            if g.get('icon') else url_for('static', filename='default_icon.png')
         )
+        g['members'] = g.get('approximate_member_count', 'Unknown')
+        g['description'] = g.get('description', 'No description')
     return guilds
 
 # ---------------- Routes ---------------- #
 @app.route("/")
 def index():
-    guilds = get_bot_guilds()
-    return render_template("index.html", guilds=guilds, invite_link=INVITE_LINK, support_link=SUPPORT_LINK)
+    joined_servers = get_bot_guilds()
+    return render_template(
+        "index.html",
+        joined_servers=joined_servers,
+        invite_link=INVITE_LINK,
+        support_link=SUPPORT_LINK
+    )
 
 @app.route("/login")
 def login():
@@ -79,12 +84,16 @@ def callback():
     r = requests.post(f"{DISCORD_API}/oauth2/token", data=data, headers=headers)
     if r.status_code != 200:
         return "Failed to authorize with Discord", 400
+
     tokens = r.json()
     access_token = tokens.get("access_token")
     if not access_token:
         return "No access token received", 400
 
-    user_resp = requests.get(f"{DISCORD_API}/users/@me", headers={"Authorization": f"Bearer {access_token}"})
+    user_resp = requests.get(
+        f"{DISCORD_API}/users/@me",
+        headers={"Authorization": f"Bearer {access_token}"}
+    )
     if user_resp.status_code != 200:
         return "Failed to fetch user info", 400
 
