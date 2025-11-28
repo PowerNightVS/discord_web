@@ -19,8 +19,8 @@
 
       <div class="flex items-center gap-4">
         <a href="{{ url_for('dashboard') }}" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">Home</a>
-        <a href="{{ invite_link }}" class="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition text-white">➕ Invite Bot</a>
-        <a href="{{ support_link }}" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">💬 Support</a>
+        <a href="{{ invite_link }}" target="_blank" rel="noopener" class="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition text-white">➕ Invite Bot</a>
+        <a href="{{ support_link }}" target="_blank" rel="noopener" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">💬 Support</a>
         <button id="theme-toggle" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">🌓</button>
         <a href="{{ url_for('logout') }}" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white transition">🚪 Logout</a>
       </div>
@@ -52,7 +52,7 @@
         <p class="text-gray-300 mt-2">Wake-Up Time: {{ bot_wake_up_time }}</p>
       </div>
       <div class="mt-4 sm:mt-0">
-        <a href="{{ invite_link }}" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold transition shadow-lg">➕ Invite Bot</a>
+        <a href="{{ invite_link }}" target="_blank" rel="noopener" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold transition shadow-lg">➕ Invite Bot</a>
       </div>
     </section>
 
@@ -64,7 +64,11 @@
           <div class="bg-gray-700 dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105 flex flex-col justify-between">
             <h3 class="text-lg font-bold mb-2">{{ command.name }}</h3>
             <p class="text-gray-300 mb-4 flex-grow">{{ command.description }}</p>
-            <button class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition">Use Command</button>
+            <form action="{{ url_for('use_command', command_name=command.name) }}" method="POST">
+              <button type="submit" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition">
+                Use Command
+              </button>
+            </form>
           </div>
         {% endfor %}
       </div>
@@ -72,8 +76,8 @@
 
   </div>
 
+  <!-- ======================= DARK MODE SCRIPT ======================= -->
   <script>
-    // Dark mode toggle
     const toggleButton = document.getElementById('theme-toggle');
     const html = document.documentElement;
     if(localStorage.getItem('theme') === 'dark') html.classList.add('dark');
