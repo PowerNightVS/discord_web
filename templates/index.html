@@ -1,78 +1,117 @@
 <!DOCTYPE html>
-<html lang="en" class="transition-colors duration-500">
+<html lang="en" class="transition-colors duration-500 dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NightWave – Music Enhanced Bot</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
   <style>
     body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     .banner-bg {
-      background-image: url('{{ url_for("static", filename="banner.jpg") }}'); 
+      background-image: url('{{ url_for("static", filename="banner.jpg") }}');
       background-size: cover;
       background-position: center;
       filter: brightness(0.6);
     }
   </style>
-  <script>
-    tailwind.config = { darkMode: 'class' }
-  </script>
 </head>
-<body class="bg-gray-900 dark:bg-gray-900 text-white min-h-screen flex flex-col justify-center items-center p-6">
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
 
-  <!-- Dark Mode Toggle -->
-  <div class="absolute top-4 right-4 z-50">
-    <button id="theme-toggle" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-      🌓 Toggle Dark Mode
+<!-- ======================= NAVBAR ======================= -->
+<nav class="w-full fixed top-0 left-0 bg-gray-900/80 backdrop-blur-lg shadow z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3">
+      <img src="{{ url_for('static', filename='bot_icon.png') }}" class="h-10 w-10 rounded-full border border-blue-500" />
+      <span class="text-xl font-bold text-blue-400">NightWave</span>
+    </div>
+
+    <!-- Links -->
+    <div class="hidden sm:flex gap-8 font-semibold text-gray-300">
+      <a href="#home" class="hover:text-blue-400">Home</a>
+      <a href="#features" class="hover:text-blue-400">Features</a>
+      <a href="#about" class="hover:text-blue-400">About</a>
+      <a href="#support" class="hover:text-blue-400">Support</a>
+      <a href="{{ invite_link }}" class="hover:text-blue-400">Add Bot</a>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="theme-toggle" class="px-4 py-2 bg-gray-800 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+      🌓
     </button>
   </div>
+</nav>
 
-  <!-- Banner Section -->
-  <div class="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
-    <div class="absolute inset-0 banner-bg"></div>
-    <div class="relative z-10 flex flex-col items-center text-center p-6">
-      
-      <!-- Bot Icon -->
-      <img src="{{ url_for('static', filename='bot_icon.png') }}" alt="NightWave Bot" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-blue-500 shadow-lg mb-6 animate-pulse">
+<!-- ======================= BANNER (HOME) ======================= -->
+<section id="home" class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 banner-bg"></div>
 
-      <!-- Title -->
-      <h1 class="text-5xl sm:text-6xl font-extrabold mb-4 text-blue-400 drop-shadow-lg">
-         NightWave
-      </h1>
+  <div class="relative z-10 text-center max-w-3xl p-6 mt-20">
+    <img src="{{ url_for('static', filename='bot_icon.png') }}" class="w-40 h-40 mx-auto rounded-full border-4 border-blue-500 shadow-lg animate-pulse mb-6" />
 
-      <!-- Description -->
-      <p class="text-gray-200 dark:text-gray-300 text-lg sm:text-xl mb-10 max-w-2xl">
-        A powerful music-enhanced Discord bot with high-quality music, moderation, and more!
-      </p>
+    <h1 class="text-6xl font-extrabold text-blue-400 drop-shadow-lg">NightWave</h1>
 
-      <!-- Buttons -->
-      <div class="flex flex-col sm:flex-row justify-center gap-6">
-        <a href="{{ invite_link }}" 
-           class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
-          ➕ Invite the Bot
-        </a>
-        <a href="{{ url_for('dashboard') }}" 
-           class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
-          ⚙️ Dashboard
-        </a>
-      </div>
+    <p class="text-gray-200 text-xl mt-4">
+      A powerful music-enhanced Discord bot with high‑quality audio, radio, moderation, and more.
+    </p>
+
+    <div class="flex flex-col sm:flex-row justify-center gap-6 mt-10">
+      <a href="{{ invite_link }}" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">➕ Invite Bot</a>
+
+      <a href="{{ url_for('dashboard') }}" class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">⚙️ Dashboard</a>
     </div>
   </div>
+</section>
 
-  <!-- Footer -->
-  <footer class="text-gray-500 dark:text-gray-400 text-sm mt-8">
-    © 2025 NightWave – Made with ❤️ for Discord servers
-  </footer>
+<!-- ======================= ABOUT SECTION ======================= -->
+<section id="about" class="max-w-5xl mx-auto px-6 mt-20 text-center">
+  <h2 class="text-4xl font-bold text-blue-400 mb-4">Welcome to NightWave</h2>
+  <p class="text-gray-300 text-lg">
+    Welcome to NightWave, the all-in-one Discord music bot designed to bring high-quality sound and powerful features to your server.
+    NightWave offers smooth music streaming, fast performance, complete slash-command control, queue management, lyrics support,
+    radio streaming, and more — delivering the best listening experience for both small and large communities.
+  </p>
+</section>
 
-  <script>
-    const toggleButton = document.getElementById('theme-toggle');
-    const html = document.documentElement;
-    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
-    toggleButton.addEventListener('click', () => {
-      html.classList.toggle('dark');
-      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-    });
-  </script>
+<!-- ======================= FEATURES ======================= -->
+<section id="features" class="w-full max-w-5xl mx-auto mt-20 px-6">
+  <h2 class="text-3xl font-bold text-center mb-8 text-blue-400">Why NightWave?</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
+    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">24/7 Online</div>
+    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">Accuracy</div>
+    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">High Performance</div>
+    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">High Quality Audio</div>
+    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">24/7 Radio</div>
+    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">Best for Sri Lanka</div>
+  </div>
+</section>
+
+<!-- ======================= SUPPORT ======================= -->
+<section id="support" class="max-w-5xl mx-auto mt-20 px-6 text-center">
+  <h2 class="text-3xl font-bold text-blue-400 mb-4">Support</h2>
+  <p class="text-gray-300 text-lg mb-4">Need help? Join our support server.</p>
+  <a href="{{ support_link }}" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition">💬 Support Server</a>
+</section>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="text-gray-500 text-sm text-center mt-20 mb-10">
+  © 2025 NightWave – Made with ❤️ for Discord servers
+</footer>
+
+<!-- ======================= DARK MODE SCRIPT ======================= -->
+<script>
+const toggleButton = document.getElementById('theme-toggle');
+const html = document.documentElement;
+if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+
+toggleButton.addEventListener('click', () => {
+  html.classList.toggle('dark');
+  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+});
+</script>
 
 </body>
 </html>
