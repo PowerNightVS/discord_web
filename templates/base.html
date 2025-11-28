@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-500">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title if title else "PowerNight.Bot" }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <style>
+    /* Optional: Smooth font rendering */
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  </style>
+  <script>
+    // Tailwind config for dark mode
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white dark:bg-gray-900 dark:text-white transition-colors duration-500 min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- Dark Mode Toggle Button -->
+  <div class="absolute top-4 right-4">
+    <button id="theme-toggle" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white">
+      🌓 Toggle Dark Mode
+    </button>
+  </div>
+
+  <!-- Page Content -->
+  <main class="flex-1 w-full flex flex-col items-center justify-center max-w-5xl">
+    {% block content %}{% endblock %}
+  </main>
+
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    // Load theme from localStorage
+    if (localStorage.getItem('theme') === 'dark') {
+      html.classList.add('dark');
+    }
+
+    toggleButton.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      if (html.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>
+

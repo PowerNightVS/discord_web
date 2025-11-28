@@ -1,16 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="transition-colors duration-500">
 <head>
-  <title>My Discord Bot</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightWave – Music Enhanced Bot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    .banner-bg {
+      background-image: url('{{ url_for("static", filename="banner.jpg") }}'); 
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.6);
+    }
+  </style>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
 </head>
-<body>
-  <div class="container">
-    <h1>🤖 Welcome to My Bot</h1>
-    <p>A powerful multipurpose Discord bot with music, moderation, and more!</p>
+<body class="bg-gray-900 dark:bg-gray-900 text-white min-h-screen flex flex-col justify-center items-center p-6">
 
-    <a href="{{ invite_link }}" class="button">➕ Invite the Bot</a>
-    <a href="/login" class="button secondary">⚙️ Dashboard</a>
+  <!-- Dark Mode Toggle -->
+  <div class="absolute top-4 right-4 z-50">
+    <button id="theme-toggle" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+      🌓 Toggle Dark Mode
+    </button>
   </div>
+
+  <!-- Banner Section -->
+  <div class="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
+    <div class="absolute inset-0 banner-bg"></div>
+    <div class="relative z-10 flex flex-col items-center text-center p-6">
+      
+      <!-- Bot Icon -->
+      <img src="{{ url_for('static', filename='bot_icon.png') }}" alt="NightWave Bot" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-blue-500 shadow-lg mb-6 animate-pulse">
+
+      <!-- Title -->
+      <h1 class="text-5xl sm:text-6xl font-extrabold mb-4 text-blue-400 drop-shadow-lg">
+        🤖 NightWave
+      </h1>
+
+      <!-- Description -->
+      <p class="text-gray-200 dark:text-gray-300 text-lg sm:text-xl mb-10 max-w-2xl">
+        A powerful music-enhanced Discord bot with high-quality music, moderation, and more!
+      </p>
+
+      <!-- Buttons -->
+      <div class="flex flex-col sm:flex-row justify-center gap-6">
+        <a href="{{ invite_link }}" 
+           class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
+          ➕ Invite the Bot
+        </a>
+        <a href="{{ url_for('dashboard') }}" 
+           class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
+          ⚙️ Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-gray-500 dark:text-gray-400 text-sm mt-8">
+    © 2025 NightWave – Made with ❤️ for Discord servers
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+    toggleButton.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
 </body>
 </html>
