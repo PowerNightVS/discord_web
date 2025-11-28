@@ -3,52 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title if title else "PowerNight.Bot" }}</title>
+  <title>NightWave Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <style>
-    /* Optional: Smooth font rendering */
-    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  </style>
-  <script>
-    // Tailwind config for dark mode
-    tailwind.config = {
-      darkMode: 'class'
-    }
-  </script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white dark:bg-gray-900 dark:text-white transition-colors duration-500 min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-gray-900 dark:bg-gray-900 text-white min-h-screen">
 
-  <!-- Dark Mode Toggle Button -->
+  <!-- Dark Mode Toggle -->
   <div class="absolute top-4 right-4">
-    <button id="theme-toggle" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white">
+    <button id="theme-toggle" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition">
       🌓 Toggle Dark Mode
     </button>
   </div>
 
-  <!-- Page Content -->
-  <main class="flex-1 w-full flex flex-col items-center justify-center max-w-5xl">
-    {% block content %}{% endblock %}
-  </main>
+  <div class="max-w-6xl mx-auto p-8">
+
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row items-center justify-between mb-10">
+      <div class="flex items-center gap-4">
+        <img src="{{ url_for('static', filename='bot_icon.png') }}" alt="NightWave Bot" class="w-20 h-20 rounded-full border-4 border-blue-500 shadow-lg">
+        <div>
+          <h1 class="text-4xl font-bold">👋 Hello, {{ user['username'] }}!</h1>
+          <p class="text-gray-300">Welcome to your NightWave dashboard.</p>
+        </div>
+      </div>
+      <a href="{{ url_for('logout') }}" class="mt-4 sm:mt-0 px-6 py-3 bg-red-600 hover:bg-red-500 rounded-xl text-white font-semibold text-lg transition transform hover:-translate-y-1 shadow-lg">
+        🚪 Logout
+      </a>
+    </header>
+
+    <!-- Bot Status -->
+    <section class="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl mb-8 flex items-center justify-between shadow-lg transition">
+      <div>
+        <h2 class="text-2xl font-bold mb-2">🤖 Bot Status</h2>
+        {% if bot_online %}
+          <span class="inline-block px-3 py-1 bg-green-500 rounded-full text-white font-semibold">🟢 Online</span>
+        {% else %}
+          <span class="inline-block px-3 py-1 bg-red-500 rounded-full text-white font-semibold">🔴 Offline</span>
+        {% endif %}
+        <p class="text-gray-300 mt-2">Wake-Up Time: {{ bot_wake_up_time }}</p>
+      </div>
+    </section>
+
+    <!-- Commands List -->
+    <section>
+      <h2 class="text-2xl font-bold mb-6 text-center">🎵 NightWave Commands</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for command in commands %}
+          <div class="bg-gray-700 dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+            <h3 class="text-lg font-bold mb-2">{{ command.name }}</h3>
+            <p class="text-gray-300 mb-4">{{ command.description }}</p>
+            <button class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition">
+              Use Command
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </div>
 
   <script>
     const toggleButton = document.getElementById('theme-toggle');
     const html = document.documentElement;
-
-    // Load theme from localStorage
-    if (localStorage.getItem('theme') === 'dark') {
-      html.classList.add('dark');
-    }
-
+    if(localStorage.getItem('theme') === 'dark') html.classList.add('dark');
     toggleButton.addEventListener('click', () => {
       html.classList.toggle('dark');
-      if (html.classList.contains('dark')) {
-        localStorage.setItem('theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
-      }
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     });
   </script>
 </body>
 </html>
-
