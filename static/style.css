@@ -1,0 +1,58 @@
+/* Smooth fonts */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Banner gradient overlay */
+.banner-bg {
+  position: relative;
+}
+
+.banner-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.85)
+  );
+  pointer-events: none;
+}
+
+/* Glass effect for sections */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+}
+
+/* Button hover glow */
+.btn-glow:hover {
+  box-shadow: 0 0 18px rgba(0, 153, 255, 0.7);
+  transform: translateY(-3px);
+}
+
+/* Bot image pulse */
+.bot-pulse {
+  animation: pulseShadow 3s infinite ease-in-out;
+}
+
+@keyframes pulseShadow {
+  0% { box-shadow: 0 0 15px rgba(0, 153, 255, 0.4); }
+  50% { box-shadow: 0 0 35px rgba(0, 153, 255, 0.8); }
+  100% { box-shadow: 0 0 15px rgba(0, 153, 255, 0.4); }
+}
+
+/* Footer subtle fade animation */
+.fadeIn {
+  animation: fadeInAnim 2s ease-in-out;
+}
+
+@keyframes fadeInAnim {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
