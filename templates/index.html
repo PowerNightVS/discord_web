@@ -112,6 +112,19 @@
   </div>
 </section>
 
+<audio id="bgMusic" src="{{ url_for('static', filename='music.mp3') }}" autoplay loop></audio>
+<script>
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.volume = 0.3;
+
+document.addEventListener('click', () => {
+  if(bgMusic.paused){
+    bgMusic.play();
+  }
+}, { once: true });
+</script>
+
+
 <!-- ======================= FOOTER ======================= -->
 <footer class="text-gray-500 text-sm text-center mt-20 mb-10">
   © 2025 NightWave – Made with ❤️ for Discord servers
