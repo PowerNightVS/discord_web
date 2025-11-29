@@ -58,6 +58,10 @@ def index():
         support_link=SUPPORT_LINK
     )
 
+@app.route("/about")
+def about_page():
+    return render_template("about.html")
+
 @app.route("/login")
 def login():
     return redirect(
