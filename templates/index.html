@@ -24,21 +24,23 @@
 
     <!-- Logo -->
     <div class="flex items-center gap-3">
-      <img src="{{ url_for('static', filename='bot_icon.png') }}" class="h-10 w-10 rounded-full border border-blue-500" />
+      <img src="{{ url_for('static', filename='bot_icon.png') }}"
+           class="h-10 w-10 rounded-full border border-blue-500" />
       <span class="text-xl font-bold text-blue-400">NightWave</span>
     </div>
 
     <!-- Links -->
     <div class="hidden sm:flex gap-8 font-semibold text-gray-300">
       <a href="#home" class="hover:text-blue-400">Home</a>
+      <a href="{{ url_for('about_page') }}" class="hover:text-blue-400">About</a>
       <a href="#features" class="hover:text-blue-400">Features</a>
-      <a href="#about" class="hover:text-blue-400">About</a>
       <a href="#support" class="hover:text-blue-400">Support</a>
       <a href="{{ invite_link }}" class="hover:text-blue-400">Add Bot</a>
     </div>
 
     <!-- Dark Mode Toggle -->
-    <button id="theme-toggle" class="px-4 py-2 bg-gray-800 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+    <button id="theme-toggle"
+      class="px-4 py-2 bg-gray-800 rounded-lg text-gray-300 hover:bg-gray-700 transition">
       🌓
     </button>
   </div>
@@ -49,30 +51,23 @@
   <div class="absolute inset-0 banner-bg"></div>
 
   <div class="relative z-10 text-center max-w-3xl p-6 mt-20">
-    <img src="{{ url_for('static', filename='bot_icon.png') }}" class="w-40 h-40 mx-auto rounded-full border-4 border-blue-500 shadow-lg animate-pulse mb-6" />
+    <img src="{{ url_for('static', filename='bot_icon.png') }}"
+         class="w-40 h-40 mx-auto rounded-full border-4 border-blue-500 shadow-lg animate-pulse mb-6" />
 
     <h1 class="text-6xl font-extrabold text-blue-400 drop-shadow-lg">NightWave</h1>
 
     <p class="text-gray-200 text-xl mt-4">
-      A powerful music-enhanced Discord bot with high‑quality audio, radio, moderation, and more.
+      A powerful music-enhanced Discord bot with high-quality audio, radio, moderation, and more.
     </p>
 
     <div class="flex flex-col sm:flex-row justify-center gap-6 mt-10">
-      <a href="{{ invite_link }}" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">➕ Invite Bot</a>
+      <a href="{{ invite_link }}"
+         class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">➕ Invite Bot</a>
 
-      <a href="{{ url_for('dashboard') }}" class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">⚙️ Dashboard</a>
+      <a href="{{ url_for('dashboard') }}"
+         class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">⚙️ Dashboard</a>
     </div>
   </div>
-</section>
-
-<!-- ======================= ABOUT SECTION ======================= -->
-<section id="about" class="max-w-5xl mx-auto px-6 mt-20 text-center">
-  <h2 class="text-4xl font-bold text-blue-400 mb-4">Welcome to NightWave</h2>
-  <p class="text-gray-300 text-lg">
-    Welcome to NightWave, the all-in-one Discord music bot designed to bring high-quality sound and powerful features to your server.
-    NightWave offers smooth music streaming, fast performance, complete slash-command control, queue management, lyrics support,
-    radio streaming, and more — delivering the best listening experience for both small and large communities.
-  </p>
 </section>
 
 <!-- ======================= FEATURES ======================= -->
@@ -93,7 +88,10 @@
 <section id="support" class="max-w-5xl mx-auto mt-20 px-6 text-center">
   <h2 class="text-3xl font-bold text-blue-400 mb-4">Support</h2>
   <p class="text-gray-300 text-lg mb-4">Need help? Join our support server.</p>
-  <a href="{{ support_link }}" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition">💬 Support Server</a>
+  <a href="{{ support_link }}"
+     class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition">
+     💬 Support Server
+  </a>
 </section>
 
 <!-- ======================= JOINED SERVERS ======================= -->
@@ -103,9 +101,8 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     {% for server in joined_servers %}
     <div class="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl text-center shadow-lg transition hover:shadow-xl">
-      
-      <!-- Server Icon with Spin -->
-      <img src="{{ server.icon_url }}" alt="{{ server.name }}" class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500 mb-4 server-spin">
+      <img src="{{ server.icon_url }}" alt="{{ server.name }}"
+           class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500 mb-4">
 
       <h3 class="text-lg font-bold mb-2">{{ server.name }}</h3>
       <p class="text-gray-300 mb-2">{{ server.members }} members</p>
