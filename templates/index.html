@@ -105,7 +105,7 @@
            class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500 mb-4">
 
       <h3 class="text-lg font-bold mb-2">{{ server.name }}</h3>
-      <p class="text-gray-300 mb-2">{{ server.members }} members</p>
+      <p class="text-gray-300 mb-2">{{ server.members or "Unknown members" }} members</p>
       <p class="text-gray-400 text-sm">{{ server.description or "No description" }}</p>
     </div>
     {% endfor %}
