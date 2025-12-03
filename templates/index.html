@@ -7,140 +7,171 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = { darkMode: 'class' }</script>
   <style>
-    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
     .banner-bg {
       background-image: url('{{ url_for("static", filename="banner.jpg") }}');
       background-size: cover;
       background-position: center;
       filter: brightness(0.6);
     }
+
+    /* Floating orbs animations */
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(20px); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(30px) translateX(-30px); }
+    }
+    @keyframes float3 {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-15px) translateX(15px); }
+    }
+
+    /* Logo glow animation */
+    @keyframes logoGlow {
+      0%, 100% { box-shadow: 0 0 10px #3b82f6, 0 0 20px #6366f1, 0 0 30px #a78bfa; }
+      50% { box-shadow: 0 0 20px #3b82f6, 0 0 40px #6366f1, 0 0 60px #a78bfa; }
+    }
+
+    .animate-float1 { animation: float1 6s ease-in-out infinite; }
+    .animate-float2 { animation: float2 8s ease-in-out infinite; }
+    .animate-float3 { animation: float3 7s ease-in-out infinite; }
+    .animate-logo-glow { animation: logoGlow 2.5s ease-in-out infinite; }
+    .animate-ping-slow { animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+    .animate-ping-slower { animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite; }
   </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
 
-<!-- ======================= NAVBAR ======================= -->
-<nav class="w-full fixed top-0 left-0 bg-gray-900/80 backdrop-blur-lg shadow z-50">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+  <!-- ======================= NAVBAR ======================= -->
+  <nav class="w-full fixed top-0 left-0 bg-gray-900/80 backdrop-blur-lg shadow z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='bot_icon.png') }}"
+             class="h-10 w-10 rounded-full border border-blue-500" />
+        <span class="text-xl font-bold text-blue-400">NightWave</span>
+      </div>
+      <!-- Links -->
+      <div class="hidden sm:flex gap-8 font-semibold text-gray-300">
+        <a href="#home" class="hover:text-blue-400">Home</a>
+        <a href="{{ url_for('about_page') }}" class="hover:text-blue-400">About</a>
+        <a href="#features" class="hover:text-blue-400">Features</a>
+        <a href="#support" class="hover:text-blue-400">Support</a>
+        <a href="{{ invite_link }}" class="hover:text-blue-400">Add Bot</a>
+      </div>
+      <!-- Dark Mode Toggle -->
+      <button id="theme-toggle"
+        class="px-4 py-2 bg-gray-800 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+        🌓
+      </button>
+    </div>
+  </nav>
 
-    <!-- Logo -->
-    <div class="flex items-center gap-3">
-      <img src="{{ url_for('static', filename='bot_icon.png') }}"
-           class="h-10 w-10 rounded-full border border-blue-500" />
-      <span class="text-xl font-bold text-blue-400">NightWave</span>
+  <!-- ======================= NEON BACKGROUND + BANNER ======================= -->
+  <section id="home" class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+
+    <!-- Neon Anime Glow Background -->
+    <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-black to-purple-900 opacity-50"></div>
+      <div class="absolute top-10 left-20 w-80 h-80 bg-blue-600/30 rounded-full blur-3xl animate-float1"></div>
+      <div class="absolute bottom-10 right-32 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-float2"></div>
+      <div class="absolute top-1/2 right-10 w-64 h-64 bg-pink-600/20 rounded-full blur-3xl animate-float3"></div>
+
+      <!-- Bot Logo Glow Animation -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div class="relative w-44 h-44">
+          <img src="{{ url_for('static', filename='bot_icon.png') }}" 
+               class="w-full h-full rounded-full border-4 border-blue-500 shadow-xl animate-logo-glow">
+          <span class="absolute inset-0 rounded-full bg-blue-500/20 blur-2xl animate-ping-slow"></span>
+          <span class="absolute inset-0 rounded-full bg-purple-500/20 blur-3xl animate-ping-slower"></span>
+        </div>
+      </div>
     </div>
 
-    <!-- Links -->
-    <div class="hidden sm:flex gap-8 font-semibold text-gray-300">
-      <a href="#home" class="hover:text-blue-400">Home</a>
-      <a href="{{ url_for('about_page') }}" class="hover:text-blue-400">About</a>
-      <a href="#features" class="hover:text-blue-400">Features</a>
-      <a href="#support" class="hover:text-blue-400">Support</a>
-      <a href="{{ invite_link }}" class="hover:text-blue-400">Add Bot</a>
+    <!-- Banner Content -->
+    <div class="relative z-10 text-center max-w-3xl p-6 mt-20">
+      <h1 class="text-6xl font-extrabold text-blue-400 drop-shadow-lg">NightWave</h1>
+      <p class="text-gray-200 text-xl mt-4">
+        A powerful music-enhanced Discord bot with high-quality audio, radio, moderation, and more.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-6 mt-10">
+        <a href="{{ invite_link }}"
+          class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">➕ Invite Bot</a>
+        <a href="{{ url_for('dashboard') }}"
+          class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">⚙️ Dashboard</a>
+      </div>
     </div>
+  </section>
 
-    <!-- Dark Mode Toggle -->
-    <button id="theme-toggle"
-      class="px-4 py-2 bg-gray-800 rounded-lg text-gray-300 hover:bg-gray-700 transition">
-      🌓
-    </button>
-  </div>
-</nav>
-
-<!-- ======================= BANNER (HOME) ======================= -->
-<section id="home" class="relative w-full h-screen flex items-center justify-center overflow-hidden">
-  <div class="absolute inset-0 banner-bg"></div>
-
-  <div class="relative z-10 text-center max-w-3xl p-6 mt-20">
-    <img src="{{ url_for('static', filename='bot_icon.png') }}"
-         class="w-40 h-40 mx-auto rounded-full border-4 border-blue-500 shadow-lg animate-pulse mb-6" />
-
-    <h1 class="text-6xl font-extrabold text-blue-400 drop-shadow-lg">NightWave</h1>
-
-    <p class="text-gray-200 text-xl mt-4">
-      A powerful music-enhanced Discord bot with high-quality audio, radio, moderation, and more.
-    </p>
-
-    <div class="flex flex-col sm:flex-row justify-center gap-6 mt-10">
-      <a href="{{ invite_link }}"
-         class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">➕ Invite Bot</a>
-
-      <a href="{{ url_for('dashboard') }}"
-         class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl text-white font-semibold text-lg shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">⚙️ Dashboard</a>
+  <!-- ======================= FEATURES ======================= -->
+  <section id="features" class="w-full max-w-5xl mx-auto mt-20 px-6">
+    <h2 class="text-3xl font-bold text-center mb-8 text-blue-400">Why NightWave?</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
+      <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">24/7 Online</div>
+      <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">Accuracy</div>
+      <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">High Performance</div>
+      <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">High Quality Audio</div>
+      <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">24/7 Radio</div>
+      <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">Best for Sri Lanka</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ======================= FEATURES ======================= -->
-<section id="features" class="w-full max-w-5xl mx-auto mt-20 px-6">
-  <h2 class="text-3xl font-bold text-center mb-8 text-blue-400">Why NightWave?</h2>
+  <!-- ======================= SUPPORT ======================= -->
+  <section id="support" class="max-w-5xl mx-auto mt-20 px-6 text-center">
+    <h2 class="text-3xl font-bold text-blue-400 mb-4">Support</h2>
+    <p class="text-gray-300 text-lg mb-4">Need help? Join our support server.</p>
+    <a href="{{ support_link }}"
+       class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition">
+      💬 Support Server
+    </a>
+  </section>
 
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
-    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">24/7 Online</div>
-    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">Accuracy</div>
-    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">High Performance</div>
-    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">High Quality Audio</div>
-    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">24/7 Radio</div>
-    <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">Best for Sri Lanka</div>
-  </div>
-</section>
-
-<!-- ======================= SUPPORT ======================= -->
-<section id="support" class="max-w-5xl mx-auto mt-20 px-6 text-center">
-  <h2 class="text-3xl font-bold text-blue-400 mb-4">Support</h2>
-  <p class="text-gray-300 text-lg mb-4">Need help? Join our support server.</p>
-  <a href="{{ support_link }}"
-     class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-semibold text-lg shadow-md transition">
-     💬 Support Server
-  </a>
-</section>
-
-<!-- ======================= JOINED SERVERS ======================= -->
-<section id="servers" class="max-w-6xl mx-auto mt-20 px-6">
-  <h2 class="text-3xl font-bold text-center mb-8 text-blue-400">🌐 Joined Servers</h2>
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    {% for server in joined_servers %}
-    <div class="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl text-center shadow-lg transition hover:shadow-xl">
-      <img src="{{ server.icon_url }}" alt="{{ server.name }}"
-           class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500 mb-4">
-
-      <h3 class="text-lg font-bold mb-2">{{ server.name }}</h3>
-      <p class="text-gray-300 mb-2">{{ server.members or "Unknown members" }} members</p>
-      <p class="text-gray-400 text-sm">{{ server.description or "No description" }}</p>
+  <!-- ======================= JOINED SERVERS ======================= -->
+  <section id="servers" class="max-w-6xl mx-auto mt-20 px-6">
+    <h2 class="text-3xl font-bold text-center mb-8 text-blue-400">🌐 Joined Servers</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for server in joined_servers %}
+      <div class="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl text-center shadow-lg transition hover:shadow-xl">
+        <img src="{{ server.icon_url }}" alt="{{ server.name }}"
+             class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500 mb-4">
+        <h3 class="text-lg font-bold mb-2">{{ server.name }}</h3>
+        <p class="text-gray-300 mb-2">{{ server.members or "Unknown members" }} members</p>
+        <p class="text-gray-400 text-sm">{{ server.description or "No description" }}</p>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-</section>
+  </section>
 
-<audio id="bgMusic" src="{{ url_for('static', filename='music.mp3') }}" autoplay loop></audio>
-<script>
-const bgMusic = document.getElementById('bgMusic');
-bgMusic.volume = 0.3;
+  <audio id="bgMusic" src="{{ url_for('static', filename='music.mp3') }}" autoplay loop></audio>
+  <script>
+    const bgMusic = document.getElementById('bgMusic');
+    bgMusic.volume = 0.3;
+    document.addEventListener('click', () => {
+      if(bgMusic.paused){ bgMusic.play(); }
+    }, { once: true });
+  </script>
 
-document.addEventListener('click', () => {
-  if(bgMusic.paused){
-    bgMusic.play();
-  }
-}, { once: true });
-</script>
+  <!-- ======================= FOOTER ======================= -->
+  <footer class="text-gray-500 text-sm text-center mt-20 mb-10">
+    © 2025 NightWave – Made with ❤️ for Discord servers
+  </footer>
 
+  <!-- ======================= DARK MODE SCRIPT ======================= -->
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
 
-<!-- ======================= FOOTER ======================= -->
-<footer class="text-gray-500 text-sm text-center mt-20 mb-10">
-  © 2025 NightWave – Made with ❤️ for Discord servers
-</footer>
-
-<!-- ======================= DARK MODE SCRIPT ======================= -->
-<script>
-const toggleButton = document.getElementById('theme-toggle');
-const html = document.documentElement;
-if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
-
-toggleButton.addEventListener('click', () => {
-  html.classList.toggle('dark');
-  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-});
-</script>
-
+    toggleButton.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
 </body>
 </html>
