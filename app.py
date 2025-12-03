@@ -136,18 +136,6 @@ def dashboard():
         invite_link=INVITE_LINK
     )
 
-@app.route("/change_nickname", methods=["POST"])
-def change_nickname():
-    new_nick = request.form["new_nick"]
-    password = request.form["password"]
-
-    if password != senon.master@159:
-        return "❌ Wrong password", 403
-
-    # Save nickname in database for that guild
-    save_nickname_for_guild(guild_id, new_nick)
-
-    return redirect(url_for("dashboard"))
 
 @app.route("/logout")
 def logout():
