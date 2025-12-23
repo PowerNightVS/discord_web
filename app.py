@@ -81,6 +81,17 @@ def stream_page():
     """The steam.html page list"""
     return render_template("stream.html", streams=active_streams)
 
+@app.route("/")
+def index():
+    joined_servers = get_bot_guilds()
+    return render_template(
+        "index.html",
+        joined_servers=joined_servers,
+        active_streams=active_streams,  # <--- Add this line
+        invite_link=INVITE_LINK,
+        support_link=SUPPORT_LINK
+    )
+
 @app.route("/about")
 def about_page():
     return render_template("about.html")

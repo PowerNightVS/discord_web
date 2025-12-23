@@ -1,34 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="dark">
 <head>
-    <title>PowerNight | Live Streams</title>
-    <style>
-        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; }
-        .stream-list { display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
-        .stream-card { 
-            background: #2c2f33; border-radius: 10px; padding: 20px; 
-            margin: 10px; width: 80%; max-width: 500px; border-left: 5px solid #7289da;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .quality { background: #43b581; padding: 5px 10px; border-radius: 5px; font-weight: bold; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Streams – NightWave</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Reuse your existing animations */
+    @keyframes float1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    .animate-float1 { animation: float1 6s ease-in-out infinite; }
+    .animate-logo-glow { animation: logoGlow 2.5s ease-in-out infinite; }
+    @keyframes logoGlow {
+      0%, 100% { box-shadow: 0 0 10px #3b82f6; }
+      50% { box-shadow: 0 0 30px #3b82f6, 0 0 50px #6366f1; }
+    }
+  </style>
 </head>
-<body>
-    <h1>Active Streams</h1>
-    <div class="stream-list">
-        {% for stream in streams %}
-        <div class="stream-card">
-            <div>
-                <h2 style="margin:0;">{{ stream.title }}</h2>
-                <p style="color: #bbb;">Streamer: {{ stream.streamer }}</p>
-            </div>
-            <div class="quality">{{ stream.quality }}</div>
-        </div>
-        {% else %}
-        <p>No active streams right now. Use /stream in Discord!</p>
-        {% endfor %}
+<body class="bg-gray-900 text-white min-h-screen">
+
+  <div class="fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute top-10 left-20 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl animate-float1"></div>
+  </div>
+
+  <nav class="p-6">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="/" class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='bot_icon.png') }}" class="h-8 w-8 rounded-full border border-blue-500" />
+        <span class="text-xl font-bold text-blue-400">NightWave</span>
+      </a>
+      <a href="/" class="text-gray-400 hover:text-white transition">← Back to Home</a>
     </div>
-    <br>
-    <a href="/" style="color: #7289da;">Back to Home</a>
+  </nav>
+
+  <main class="max-w-5xl mx-auto mt-10 px-6">
+    <header class="text-center mb-16">
+      <h1 class="text-5xl font-extrabold text-white mb-4">Community <span class="text-blue-500">Live</span> Streams</h1>
+      <p class="text-gray-400">Anyone can watch these streams. Start yours with <code class="bg-gray-800 text-blue-400 px-2 py-1 rounded">/stream</code></p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for s in streams %}
+      <div class="bg-gray-800/40 border border-gray-700 p-6 rounded-3xl backdrop-blur-md hover:border-blue-500 transition-all group">
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-2">
+            <span class="flex h-3 w-3 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            </span>
+            <span class="text-xs font-bold text-red-500 uppercase tracking-widest">Live Now</span>
+          </div>
+          <span class="bg-blue-600 text-white text-[10px] font-black px-2 py-1 rounded shadow-lg shadow-blue-900/50">{{ s.quality }}</span>
+        </div>
+        
+        <h3 class="text-xl font-bold mb-2 group-hover:text-blue-400 transition">{{ s.title }}</h3>
+        <p class="text-gray-400 text-sm mb-6">Hosted by <span class="text-white font-medium">@{{ s.streamer }}</span></p>
+        
+        <button class="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold transition shadow-lg shadow-blue-600/20">
+          Watch Stream
+        </button>
+      </div>
+      {% else %}
+      <div class="col-span-full text-center py-20 border-2 border-dashed border-gray-800 rounded-3xl">
+        <p class="text-gray-500 text-lg">No streams are active right now.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer class="mt-20 py-10 text-center text-gray-600 text-sm">
+    © 2025 PowerNight – High Quality Audio Streaming
+  </footer>
 </body>
 </html>

@@ -74,6 +74,13 @@
         <a href="{{ invite_link }}" class="hover:text-blue-400">Add Bot</a>
       </div>
       <!-- Dark Mode Toggle -->
+       <div class="hidden sm:flex gap-8 font-semibold text-gray-300">
+  <a href="#home" class="hover:text-blue-400">Home</a>
+  <a href="{{ url_for('about_page') }}" class="hover:text-blue-400">About</a>
+  <a href="{{ url_for('stream_page') }}" class="hover:text-blue-400 text-red-400">🔴 Live Streams</a> <a href="#features" class="hover:text-blue-400">Features</a>
+  ...
+</div>
+
       <button id="theme-toggle"
         class="px-4 py-2 bg-gray-800 rounded-lg text-gray-300 hover:bg-gray-700 transition">
         🌓
@@ -129,6 +136,35 @@
       <div class="border border-gray-700 bg-gray-800 p-6 rounded-xl text-center font-semibold shadow hover:shadow-lg transition">Best for Sri Lanka</div>
     </div>
   </section>
+
+  <section id="live-now" class="max-w-6xl mx-auto mt-20 px-6">
+  <div class="flex justify-between items-center mb-8">
+    <h2 class="text-3xl font-bold text-blue-400 flex items-center gap-3">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+      </span>
+      Live Community Streams
+    </h2>
+    <a href="{{ url_for('stream_page') }}" class="text-blue-400 hover:underline">View All →</a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    {% for s in active_streams[:3] %} <div class="bg-gray-800/50 border border-gray-700 p-5 rounded-2xl backdrop-blur-sm hover:border-blue-500 transition">
+      <div class="flex justify-between items-start mb-4">
+        <span class="bg-blue-600/20 text-blue-400 text-xs font-bold px-2 py-1 rounded">{{ s.quality }}</span>
+        <span class="text-gray-500 text-xs">🔴 LIVE</span>
+      </div>
+      <h3 class="text-lg font-bold truncate">{{ s.title }}</h3>
+      <p class="text-gray-400 text-sm mt-1">Streamed by <span class="text-blue-400">@{{ s.streamer }}</span></p>
+    </div>
+    {% else %}
+    <div class="col-span-full py-10 text-center bg-gray-800/20 rounded-2xl border border-dashed border-gray-700">
+      <p class="text-gray-500">No active streams. Be the first by using <code class="bg-gray-700 px-2 py-1 rounded text-blue-300">/stream</code></p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
 
   <!-- ======================= SUPPORT ======================= -->
   <section id="support" class="max-w-5xl mx-auto mt-20 px-6 text-center">
