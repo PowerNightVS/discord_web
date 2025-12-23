@@ -58,6 +58,29 @@ def index():
         support_link=SUPPORT_LINK
     )
 
+# --- Add this near your other lists (like commands) ---
+active_streams = [] 
+
+# --- Add these two new routes ---
+
+@app.route("/api/add_stream", methods=["POST"])
+def add_stream():
+    """Endpoint for the Discord Bot to send stream data"""
+    data = request.json
+    # Basic data: {'streamer': 'Name', 'title': 'Title', 'quality': '1080p'}
+    if data:
+        # Keep only the last 10 streams so the list doesn't get too long
+        active_streams.insert(0, data)
+        if len(active_streams) > 10:
+            active_streams.pop()
+        return {"status": "success"}, 200
+    return {"status": "error"}, 400
+
+@app.route("/stream")
+def stream_page():
+    """The steam.html page list"""
+    return render_template("stream.html", streams=active_streams)
+
 @app.route("/about")
 def about_page():
     return render_template("about.html")
