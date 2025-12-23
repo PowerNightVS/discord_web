@@ -69,14 +69,27 @@ active_streams = []
 
 @app.route("/api/add_stream", methods=["POST"])
 def add_stream():
-    """Endpoint for the Discord Bot to send stream data"""
     data = request.json
-    # Basic data: {'streamer': 'Name', 'title': 'Title', 'quality': '1080p'}
+    global active_streams
     if data:
-        # Keep only the last 10 streams so the list doesn't get too long
+        # 1. Remove any existing stream from this user so it doesn't duplicate
+        active_streams = [s for s in active_streams if s['streamer'] != data['streamer']]
+        
+        # 2. Add the new stream to the top
         active_streams.insert(0, data)
-        if len(active_streams) > 10:
-            active_streams.pop()
+        
+        # 3. Limit to top 10
+        active_streams = active_streams[:10]
+        return {"status": "success"}, 200
+    return {"status": "error"}, 400
+
+@app.route("/api/stop_stream", methods=["POST"])
+def stop_stream():
+    data = request.json
+    global active_streams
+    if data and "streamer" in data:
+        # Remove that specific user from the list
+        active_streams = [s for s in active_streams if s['streamer'] != data['streamer']]
         return {"status": "success"}, 200
     return {"status": "error"}, 400
 
