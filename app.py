@@ -50,10 +50,14 @@ def get_bot_guilds():
 # ---------------- Routes ---------------- #
 @app.route("/")
 def index():
+    # 1. Get the servers (your old code)
     joined_servers = get_bot_guilds()
+    
+    # 2. Return the template with ALL the data needed
     return render_template(
         "index.html",
         joined_servers=joined_servers,
+        active_streams=active_streams,  # From the new stream logic
         invite_link=INVITE_LINK,
         support_link=SUPPORT_LINK
     )
@@ -80,17 +84,6 @@ def add_stream():
 def stream_page():
     """The steam.html page list"""
     return render_template("stream.html", streams=active_streams)
-
-@app.route("/")
-def index():
-    joined_servers = get_bot_guilds()
-    return render_template(
-        "index.html",
-        joined_servers=joined_servers,
-        active_streams=active_streams,  # <--- Add this line
-        invite_link=INVITE_LINK,
-        support_link=SUPPORT_LINK
-    )
 
 @app.route("/about")
 def about_page():
