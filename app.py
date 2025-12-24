@@ -62,6 +62,21 @@ def index():
         support_link=SUPPORT_LINK
     )
 
+# At the top with your other variables
+user_stats = {} 
+
+@app.route("/api/update_leaderboard", methods=["POST"])
+def update_stats():
+    global user_stats
+    user_stats = request.json
+    return {"status": "success"}, 200
+
+@app.route("/leaderboard")
+def leaderboard_page():
+    # Sort users by command count (highest to lowest) and take top 20
+    sorted_users = sorted(user_stats.items(), key=lambda x: x[1], reverse=True)[:20]
+    return render_template("leaderboard.html", leaderboard=sorted_users)
+
 # --- Add this near your other lists (like commands) ---
 active_streams = [] 
 
