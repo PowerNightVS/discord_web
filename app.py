@@ -2,7 +2,8 @@ from flask import Flask, render_template, redirect, request, session, url_for
 import os
 import requests
 from dotenv import load_dotenv
-import sqlite3 
+import sqlite3
+
 # ---------------- Load environment variables ---------------- #
 load_dotenv()
 
@@ -18,6 +19,10 @@ BOT_TOKEN = os.getenv("DISCORD_TOKEN")
 SUPPORT_LINK = os.getenv("SUPPORT_LINK")
 INVITE_LINK = f"https://discord.com/oauth2/authorize?client_id={CLIENT_ID}&scope=bot+applications.commands&permissions=8"
 DISCORD_API = "https://discord.com/api"
+
+# ---------------- Globals ---------------- #
+user_stats = {}
+active_streams = []
 
 # ---------------- Utility Functions ---------------- #
 def get_current_user():
@@ -47,28 +52,9 @@ def get_bot_guilds():
         g['description'] = g.get('description', 'No description')
     return guilds
 
-# ---------------- Routes ---------------- #
-@app.route("/")
-def index():
-    # 1. Get the servers (your old code)
-    joined_servers = get_bot_guilds()
-    
-    # 2. Return the template with ALL the data needed
-    return render_template(
-        "index.html",
-        joined_servers=joined_servers,
-        active_streams=active_streams,  # From the new stream logic
-        invite_link=INVITE_LINK,
-        support_link=SUPPORT_LINK
-    )
-
-# At the top with your other variables
-user_stats = {} 
-
 def add_command_use(user_id, username):
     db = sqlite3.connect("database.db")
     cur = db.cursor()
-
     cur.execute("""
         INSERT INTO users (id, username, command_count)
         VALUES (?, ?, 1)
@@ -76,27 +62,45 @@ def add_command_use(user_id, username):
         command_count = command_count + 1,
         username = excluded.username
     """, (user_id, username))
-
     db.commit()
     db.close()
 
-# --- Add this near your other lists (like commands) ---
-active_streams = [] 
+# ---------------- Routes ---------------- #
+@app.route("/")
+def index():
+    joined_servers = get_bot_guilds()
+    return render_template(
+        "index.html",
+        joined_servers=joined_servers,
+        active_streams=active_streams,
+        invite_link=INVITE_LINK,
+        support_link=SUPPORT_LINK
+    )
 
-# --- Add these two new routes ---
+@app.route("/leaderboard")
+def leaderboard():
+    try:
+        db = sqlite3.connect("database.db")
+        cur = db.cursor()
+        cur.execute("""
+            SELECT username, command_count
+            FROM users
+            ORDER BY command_count DESC
+            LIMIT 20
+        """)
+        leaderboard = cur.fetchall()
+        db.close()
+        return render_template("leaderboard.html", leaderboard=leaderboard)
+    except Exception as e:
+        return f"Error loading leaderboard: {e}", 500
 
 @app.route("/api/add_stream", methods=["POST"])
 def add_stream():
     data = request.json
     global active_streams
     if data:
-        # 1. Remove any existing stream from this user so it doesn't duplicate
         active_streams = [s for s in active_streams if s['streamer'] != data['streamer']]
-        
-        # 2. Add the new stream to the top
         active_streams.insert(0, data)
-        
-        # 3. Limit to top 10
         active_streams = active_streams[:10]
         return {"status": "success"}, 200
     return {"status": "error"}, 400
@@ -106,14 +110,12 @@ def stop_stream():
     data = request.json
     global active_streams
     if data and "streamer" in data:
-        # Remove that specific user from the list
         active_streams = [s for s in active_streams if s['streamer'] != data['streamer']]
         return {"status": "success"}, 200
     return {"status": "error"}, 400
 
 @app.route("/stream")
 def stream_page():
-    """The steam.html page list"""
     return render_template("stream.html", streams=active_streams)
 
 @app.route("/about")
@@ -193,7 +195,6 @@ def dashboard():
         bot_wake_up_time=get_bot_wake_up_time(),
         invite_link=INVITE_LINK
     )
-
 
 @app.route("/logout")
 def logout():
