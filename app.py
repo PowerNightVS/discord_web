@@ -2,8 +2,6 @@ from flask import Flask, render_template, redirect, request, session, url_for
 import os
 import requests
 from dotenv import load_dotenv
-import sqlite3
-
 # ---------------- Load environment variables ---------------- #
 load_dotenv()
 
@@ -41,30 +39,6 @@ def get_bot_guilds():
     response = requests.get(url, headers=headers)
     if response.status_code != 200:
         return []
-
-    guilds = response.json()
-    for g in guilds:
-        g['icon_url'] = (
-            f"https://cdn.discordapp.com/icons/{g['id']}/{g['icon']}.png"
-            if g.get('icon') else url_for('static', filename='default_icon.png')
-        )
-        g['members'] = g.get('approximate_member_count', 'Unknown')
-        g['description'] = g.get('description', 'No description')
-    return guilds
-
-def add_command_use(user_id, username):
-    db = sqlite3.connect("database.db")
-    cur = db.cursor()
-    cur.execute("""
-        INSERT INTO users (id, username, command_count)
-        VALUES (?, ?, 1)
-        ON CONFLICT(id) DO UPDATE SET
-        command_count = command_count + 1,
-        username = excluded.username
-    """, (user_id, username))
-    db.commit()
-    db.close()
-
 # ---------------- Routes ---------------- #
 @app.route("/")
 def index():
@@ -76,23 +50,6 @@ def index():
         invite_link=INVITE_LINK,
         support_link=SUPPORT_LINK
     )
-
-@app.route("/leaderboard")
-def leaderboard():
-    try:
-        db = sqlite3.connect("database.db")
-        cur = db.cursor()
-        cur.execute("""
-            SELECT username, command_count
-            FROM users
-            ORDER BY command_count DESC
-            LIMIT 20
-        """)
-        leaderboard = cur.fetchall()
-        db.close()
-        return render_template("leaderboard.html", leaderboard=leaderboard)
-    except Exception as e:
-        return f"Error loading leaderboard: {e}", 500
 
 @app.route("/api/add_stream", methods=["POST"])
 def add_stream():
