@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request, session, url_for
 import os
 import requests
 from dotenv import load_dotenv
-import sqlite3  
+import sqlite3 
 # ---------------- Load environment variables ---------------- #
 load_dotenv()
 
