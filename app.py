@@ -94,7 +94,7 @@ def stop_stream():
 
 @app.route("/stream")
 def stream_page():
-    """The steam.html page list"""
+    """The stream.html page list"""
     return render_template("stream.html", streams=active_streams)
 
 @app.route("/about")
@@ -172,7 +172,8 @@ def dashboard():
         commands=commands,
         bot_online=check_bot_status(),
         bot_wake_up_time=get_bot_wake_up_time(),
-        invite_link=INVITE_LINK
+        invite_link=INVITE_LINK,
+        support_link=SUPPORT_LINK
     )
 
 
