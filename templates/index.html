@@ -77,7 +77,7 @@
     </span>
     Live Streams
   </a>
-
+  <a href="/leaderboard" class="hover:text-blue-400">Leaderboard</a>
   <a href="#features" class="hover:text-blue-400">Features</a>
   <a href="#support" class="hover:text-blue-400">Support</a>
   <a href="{{ invite_link }}" class="hover:text-blue-400">Add Bot</a>
@@ -215,10 +215,12 @@
     const html = document.documentElement;
     if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
 
-    toggleButton.addEventListener('click', () => {
-      html.classList.toggle('dark');
-      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-    });
+    if (toggleButton) {
+      toggleButton.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+      });
+    }
   </script>
 </body>
 </html>

@@ -19,4 +19,9 @@ with app.test_request_context('/'):
     rendered = tpl.render(streams=[])
     print('stream length', len(rendered))
 
+    print('rendering leaderboard...')
+    tpl = app.jinja_env.get_template('leaderboard.html')
+    rendered = tpl.render(users=[])
+    print('leaderboard length', len(rendered))
+
 print('OK')

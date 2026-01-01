@@ -46,7 +46,26 @@ def get_bot_guilds():
         g['description'] = g.get('description', 'No description')
     return guilds
 
+DATA_FILE = "data.json"
+
+def get_leaderboard():
+    try:
+        with open(DATA_FILE, "r") as f:
+            data = json.load(f)
+    except:
+        return []
+
+    users = list(data.values())
+    users.sort(key=lambda x: x["count"], reverse=True)
+    return users[:10]
+
 # ---------------- Routes ---------------- #
+
+@app.route("/leaderboard")
+def leaderboard():
+    top_users = get_leaderboard()
+    return render_template("leaderboard.html", users=top_users)
+
 @app.route("/")
 def index():
     # 1. Get the servers (your old code)
@@ -100,6 +119,12 @@ def stream_page():
 @app.route("/about")
 def about_page():
     return render_template("about.html")
+
+@app.route("/leaderboard")
+def leaderboard_page():
+    """Command leaderboard page"""
+    users = []  # TODO: populate from command usage data
+    return render_template("leaderboard.html", users=users)
 
 @app.route("/login")
 def login():

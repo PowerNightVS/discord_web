@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>NightWave – Command Leaderboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen">
+
+<!-- NAVBAR (same as index) -->
+<nav class="w-full bg-gray-900/80 backdrop-blur-lg shadow">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <img src="{{ url_for('static', filename='bot_icon.png') }}"
+           class="h-10 w-10 rounded-full border border-blue-500" />
+      <span class="text-xl font-bold text-blue-400">NightWave</span>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="text-gray-300 hover:text-blue-400">
+      ← Back Home
+    </a>
+  </div>
+</nav>
+
+<!-- LEADERBOARD -->
+<section class="max-w-3xl mx-auto mt-20 px-6">
+  <h1 class="text-4xl font-extrabold text-center text-blue-400 mb-10">
+    🏆 Command Leaderboard
+  </h1>
+
+  <div class="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden shadow-xl">
+    {% for user in users %}
+    <div class="flex justify-between items-center px-6 py-4 border-b border-gray-700 hover:bg-gray-700/50 transition">
+      <div class="flex items-center gap-4">
+        <span class="text-xl font-bold text-blue-400">#{{ loop.index }}</span>
+        <span class="font-semibold">{{ user.name }}</span>
+      </div>
+      <span class="text-gray-300">
+        {{ user.count }} uses
+      </span>
+    </div>
+    {% else %}
+    <div class="px-6 py-10 text-center text-gray-400">
+      No command data yet.
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<footer class="text-gray-500 text-sm text-center mt-20 mb-10">
+  © 2025 NightWave
+</footer>
+
+</body>
+</html>
